@@ -1,0 +1,17 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "materialize-css": "^1.0.0-rc.2",
+    "style.css": "^1.0.0"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.5"
+  }
+}

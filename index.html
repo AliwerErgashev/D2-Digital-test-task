@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>middle js task</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="./index.js"></script>
+</head>
+
+<body>
+  <header>
+    <nav class="light-blue lighten-1" role="navigation">
+      <div class="nav-wrapper container-fluid"><a id="logo-container" href="#" class="brand-logo"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a class="waves-effect waves-light btn modal-trigger pulse" href="#searchModal">Search</a></li>
+        </ul>
+      </div>
+    </nav>
+
+  </header>
+  <main>
+    <div id="films" class="row"></div>
+    <div id="filmModalContainer"></div>
+    <ul class="pagination center">
+      <li class="waves-effect" page="prev"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+      <li class="waves-effect" page="next"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+    </ul>
+  </main>
+
+  <footer class="page-footer">
+  </footer>
+
+
+
+  <div id="searchModal" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h6>Поиск</h6>
+      <div class="row">
+        <div class="input-field col m12">
+          <input id="filmSearchInput" type="text" class="validate">
+          <label for="filmSearchInput">Название фильма</label>
+        </div>
+      </div>
+      <ul class="collection">
+        <li class="collection-item avatar">
+          <i class="material-icons circle red">play_arrow</i>
+          <span class="title">Title</span>
+          <p>First Line</p>
+          <a href="#!" class="secondary-content">
+            <i class="material-icons">grade</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+
+</html>
