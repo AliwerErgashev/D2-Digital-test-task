@@ -76,14 +76,30 @@ const delay = (function () {
 function search(text) {
   api.search(text).then(response => {
     const { results: films } = response;
-    console.log(films);
+    const resultList = document.createDocumentFragment();
+    films.forEach(el => {
+      resultList.appendChild(generateSeachResultItems(el));
+    });
+    document.getElementById("searchResultList").appendChild(resultList);
   });
 }
+
+function generateSeachResultItems(film) {
+  const frag = document.createDocumentFragment();
+  const li = document.createElement('li'); li.classList.add('collection-item')
+  const span = document.createElement('span'); span.classList.add('title'); span.textContent = film.title;
+  const p = document.createElement('p'); p.textContent = film.original_title;
+  li.appendChild(span);
+  li.appendChild(p);
+  frag.appendChild(li);
+  return frag;
+}
+
 
 
 api.getPopular().then(response => {
   const start = performance.now();
-  console.group('generating cards');
+  console.groupCollapsed('generating cards');
   const { results: films } = response;
   let filmList = document.createDocumentFragment();
   films.forEach(element => {
@@ -99,43 +115,21 @@ api.getPopular().then(response => {
 function generateCard(film) {
   const start = performance.now();
   const frag = document.createDocumentFragment();
-  const card = document.createElement('div');
-  card.classList.add('card');
-  card.classList.add('z-depth-4');
-
-  //second block
-  const cardImage = document.createElement('div');
-  cardImage.className = 'card-image';
-  const img = document.createElement('img');
-  img.src = api.getImage(film.backdrop_path ? film.backdrop_path : film.poster_path);
-  const imgText = document.createElement('span');
-  imgText.className = 'card-title';
-  // imgText.textContent = film.title;
+  const card = document.createElement('div'); card.classList.add('card', 'z-depth-5');
+  const cardImage = document.createElement('div'); cardImage.classList.add('card-image');
+  const img = document.createElement('img'); img.src = api.getImage(film.backdrop_path ? film.backdrop_path : film.poster_path);
+  const imgText = document.createElement('span'); imgText.classList.add('card-title');
   cardImage.appendChild(img);
   cardImage.appendChild(imgText);
-
-  //third block
-  const cardContent = document.createElement('div');
-  cardContent.className = 'card-content';
-  const cardContentText = document.createElement('p');
-  // cardContentText.textContent = film.overview;
-  cardContentText.textContent = film.title;
+  const cardContent = document.createElement('div'); cardContent.classList.add('card-content');
+  const cardContentText = document.createElement('p'); cardContentText.textContent = film.title;
   cardContent.appendChild(cardContentText);
-
-
   card.appendChild(cardImage);
   card.appendChild(cardContent);
-
-  const cardContainer = document.createElement('div');
-  cardContainer.classList.add('col');
-  cardContainer.classList.add('m3');
-
+  const cardContainer = document.createElement('div'); cardContainer.classList.add('col', 'm3');
   cardContainer.appendChild(card);
 
   card.addEventListener('click', openFilm.bind(film.id));
-
-
-
   frag.appendChild(cardContainer);
   const end = performance.now();
   console.log(`generateCard ${end - start} ms`);
@@ -190,9 +184,7 @@ function openFilm() {
   generateModal(this).then(data => {
     const { container: modal, film } = data;
     const modalContainer = document.getElementById('filmModalContainer');
-    if (!document.getElementById(film.id)) {
-      modalContainer.appendChild(modal);
-    }
+    !document.getElementById(film.id) ? modalContainer.appendChild(modal) : false;
     const myModal = M.Modal.init(document.getElementById(film.id));
     myModal.open();
   });
