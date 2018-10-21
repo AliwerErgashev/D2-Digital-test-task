@@ -82,36 +82,42 @@ function search(text) {
 
 
 api.getPopular().then(response => {
+  const start = performance.now();
+  console.group('generating cards');
   const { results: films } = response;
   let filmList = document.createDocumentFragment();
   films.forEach(element => {
     filmList.appendChild(generateCard(element));
   });
   document.getElementById("films").appendChild(filmList);
+  const end = performance.now();
+  console.log(`getPopular ${end - start} ms`);
+  console.groupEnd('generating cards');
 });
 
 
 function generateCard(film) {
-  let frag = document.createDocumentFragment();
-  let card = document.createElement('div');
+  const start = performance.now();
+  const frag = document.createDocumentFragment();
+  const card = document.createElement('div');
   card.classList.add('card');
   card.classList.add('z-depth-4');
 
   //second block
-  let cardImage = document.createElement('div');
+  const cardImage = document.createElement('div');
   cardImage.className = 'card-image';
-  let img = document.createElement('img');
+  const img = document.createElement('img');
   img.src = api.getImage(film.backdrop_path ? film.backdrop_path : film.poster_path);
-  let imgText = document.createElement('span');
+  const imgText = document.createElement('span');
   imgText.className = 'card-title';
   // imgText.textContent = film.title;
   cardImage.appendChild(img);
   cardImage.appendChild(imgText);
 
   //third block
-  let cardContent = document.createElement('div');
+  const cardContent = document.createElement('div');
   cardContent.className = 'card-content';
-  let cardContentText = document.createElement('p');
+  const cardContentText = document.createElement('p');
   // cardContentText.textContent = film.overview;
   cardContentText.textContent = film.title;
   cardContent.appendChild(cardContentText);
@@ -120,7 +126,7 @@ function generateCard(film) {
   card.appendChild(cardImage);
   card.appendChild(cardContent);
 
-  let cardContainer = document.createElement('div');
+  const cardContainer = document.createElement('div');
   cardContainer.classList.add('col');
   cardContainer.classList.add('m3');
 
@@ -131,24 +137,27 @@ function generateCard(film) {
 
 
   frag.appendChild(cardContainer);
-
+  const end = performance.now();
+  console.log(`generateCard ${end - start} ms`);
   return frag;
 }
 
 function getFilmDataByFilmId(filmId) {
+  const start = performance.now();
   return api.getExternalId(filmId).then(res => {
     const { imdb_id } = res;
     return api.findById(imdb_id).then(res => {
       const { movie_results: result } = res;
+      const end = performance.now();
+      console.log(`getFilmDataByFilmId ${end - start} ms`);
       return result[0];
     })
   })
 }
 
 function generateModal(filmId) {
-
-
   return getFilmDataByFilmId(filmId).then(film => {
+    const start = performance.now();
     const container = document.createDocumentFragment();
     const modal = document.createElement('div'); modal.id = film.id; modal.classList.add('modal', 'modal-sm');
     const modalContent = document.createElement('div'); modalContent.classList.add('modal-content');
@@ -169,16 +178,17 @@ function generateModal(filmId) {
     modal.appendChild(modalContent);
     modal.appendChild(modalFooter);
     container.appendChild(modal);
+    const end = performance.now();
+    console.log(`generateModal ${end - start} ms`);
     return { container, film };
   });
 
 }
 
 function openFilm() {
-  let start = performance.now();
+  const start = performance.now();
   generateModal(this).then(data => {
     const { container: modal, film } = data;
-    console.log(film);
     const modalContainer = document.getElementById('filmModalContainer');
     if (!document.getElementById(film.id)) {
       modalContainer.appendChild(modal);
@@ -186,8 +196,8 @@ function openFilm() {
     const myModal = M.Modal.init(document.getElementById(film.id));
     myModal.open();
   });
-  let end = performance.now();
-  console.log(`${end - start} ms`);
+  const end = performance.now();
+  console.log(`openFilm ${end - start} ms`);
 }
 
 function viewFilmById() {
