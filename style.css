@@ -22,3 +22,15 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+ul.collection:empty{
+  display: none;
+}
+
+.collection-item span {
+  display: block;
+}
+
+.collection-item span a{
+  float: right;
+}

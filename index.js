@@ -74,24 +74,34 @@ const delay = (function () {
 
 
 function search(text) {
+  const start = performance.now();
   api.search(text).then(response => {
+    const searchResultList = document.getElementById("searchResultList");
+    searchResultList.innerHTML = '';
     const { results: films } = response;
     const resultList = document.createDocumentFragment();
     films.forEach(el => {
       resultList.appendChild(generateSeachResultItems(el));
     });
-    document.getElementById("searchResultList").appendChild(resultList);
+    searchResultList.appendChild(resultList);
   });
+  const end = performance.now();
+  console.log(`search ${end - start} ms`);
 }
 
 function generateSeachResultItems(film) {
   const frag = document.createDocumentFragment();
   const li = document.createElement('li'); li.classList.add('collection-item')
   const span = document.createElement('span'); span.classList.add('title'); span.textContent = film.title;
-  const p = document.createElement('p'); p.textContent = film.original_title;
+  const link = document.createElement('a'); link.classList.add('btn-floating', 'waves-effect', 'waves-light');
+  const linkIcon = document.createElement('i'); linkIcon.className = 'material-icons'; linkIcon.textContent = 'movie';
+  link.appendChild(linkIcon);
+  span.appendChild(link);
+  const p = document.createElement('p'); p.textContent = `Рейтинг пользователя ${film.vote_average * 10}%`;
   li.appendChild(span);
   li.appendChild(p);
   frag.appendChild(li);
+  linkIcon.addEventListener('click', openFilm.bind(film.id));
   return frag;
 }
 
