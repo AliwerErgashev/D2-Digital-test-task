@@ -6,8 +6,8 @@ import './style.css'
 const api = {
   config: {
     api_key: '5874acfd11651a28c55771624f7021f4',
-    base_url: "http://api.themoviedb.org/3/",
-    images_uri: "http://image.tmdb.org/t/p/",
+    base_url: "https://api.themoviedb.org/3/",
+    images_uri: "https://image.tmdb.org/t/p/",
     language: "ru"
   },
   handleOptions: function (options = {}) {
